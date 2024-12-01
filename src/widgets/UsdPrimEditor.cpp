@@ -85,7 +85,7 @@ struct CreateConnectionDialog : public ModalDialog {
     void Draw() override {
         ImGui::Text("Create connection for %s", _attribute.GetPath().GetString().c_str());
         ImGui::InputText("Path", &_connectionEndPoint);
-        DrawOkCancelModal([&]() {
+        DrawModalButtonsOkCancel([&]() {
             ExecuteAfterDraw(&UsdAttribute::AddConnection, _attribute, SdfPath(_connectionEndPoint),
                              UsdListPositionBackOfPrependList);
         });
@@ -123,7 +123,7 @@ struct CreateRelationshipDialog : public ModalDialog {
         } else {
             ImGui::TextColored(ImVec4(0.8, 0.0, 0.0, 1.0), "Invalid path");
         }
-        DrawOkCancelModal([&]() {
+        DrawModalButtonsOkCancel([&]() {
             if (isValid) {
                 ExecuteAfterDraw(&UsdRelationship::AddTarget, _relationship, SdfPath(_relationshipPath), _listPosition);
             }

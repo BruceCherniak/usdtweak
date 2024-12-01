@@ -207,33 +207,38 @@ ResourcesLoader::ResourcesLoader() {
         ImFileClose(f);
         ImGui::LoadIniSettingsFromDisk(configFilePath.c_str());
     }
-    
-    float uiScale = 1.f;
-    ImGui::GetStyle().ScaleAllSizes(uiScale);
-
-    // Font
-    ImFontConfig fontConfig;
-
-    // Load primary font
-    //auto fontDefault = io.Fonts->AddFontDefault(&fontConfig); // DroidSans
-    //auto font =
-    io.Fonts->AddFontFromMemoryCompressedTTF(ibmplexsansmediumfree_compressed_data,
-                                             ibmplexsansmediumfree_compressed_size, 16.f*uiScale, &fontConfig, nullptr);
-    // Merge Icons in primary font
-    static const ImWchar iconRanges[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
-    ImFontConfig iconsConfig;
-    iconsConfig.MergeMode = true;
-    iconsConfig.PixelSnapH = true;
-    //auto iconFont =
-    io.Fonts->AddFontFromMemoryCompressedTTF(fontawesomefree5_compressed_data, fontawesomefree5_compressed_size, 13.f*uiScale,
-                                              &iconsConfig, iconRanges); // TODO: size 13 ? or 16 ? like the other fonts ?
-    // Monospace font, for the editor
-    io.Fonts->AddFontFromMemoryCompressedTTF(ibmplexmonofree_compressed_data, ibmplexmonofree_compressed_size, 16.f*uiScale, nullptr,
-                                             nullptr);
+    ScaleUI(GetEditorSettings()._uiScale);
 }
 
 int ResourcesLoader :: GetApplicationWidth() { return ResourcesLoader::GetEditorSettings()._mainWindowWidth; }
 int ResourcesLoader :: GetApplicationHeight() { return ResourcesLoader::GetEditorSettings()._mainWindowHeight; }
+
+void ResourcesLoader::ScaleUI(float scaleValue) {
+
+    ImGuiIO &io = ImGui::GetIO();
+
+    // We don't support the fonts hot reload yet, it is being worked on this PR:
+    // https://github.com/ocornut/imgui/pull/3761
+    if (io.Fonts->Fonts.Size == 0) {
+        ImGui::GetStyle().ScaleAllSizes(scaleValue);
+        // Font
+        ImFontConfig fontConfig;
+
+        // Load primary font
+        io.Fonts->AddFontFromMemoryCompressedTTF(ibmplexsansmediumfree_compressed_data,
+                                                 ibmplexsansmediumfree_compressed_size, 16.f*scaleValue, &fontConfig, nullptr);
+        // Merge Icons in primary font
+        static const ImWchar iconRanges[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
+        ImFontConfig iconsConfig;
+        iconsConfig.MergeMode = true;
+        iconsConfig.PixelSnapH = true;
+        io.Fonts->AddFontFromMemoryCompressedTTF(fontawesomefree5_compressed_data, fontawesomefree5_compressed_size, 13.f*scaleValue,
+                                                  &iconsConfig, iconRanges); // TODO: size 13 ? or 16 ? like the other fonts ?
+        // Monospace font, for the editor
+        io.Fonts->AddFontFromMemoryCompressedTTF(ibmplexmonofree_compressed_data, ibmplexmonofree_compressed_size, 16.f*scaleValue, nullptr,
+                                                 nullptr);
+    }
+}
 
 ResourcesLoader::~ResourcesLoader() {
     // Save the configuration file when the application closes the resources

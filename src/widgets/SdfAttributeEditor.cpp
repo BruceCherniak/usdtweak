@@ -41,7 +41,7 @@ struct CreateTimeSampleDialog : public ModalDialog {
         }
         
         // TODO: check if the key already exists
-        DrawOkCancelModal([=]() {
+        DrawModalButtonsOkCancel([=]() {
             VtValue value = typeName.GetDefaultValue();
             if (_copyClosestValue) { // we are normally sure that there is a least one element
                 // This is not really the closest element right now

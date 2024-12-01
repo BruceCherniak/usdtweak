@@ -25,7 +25,7 @@ struct SessionLoadModalDialog : public ModalDialog {
         DrawFileBrowser(RemainingHeight(2));
         auto filePath = GetFileBrowserFilePath();
         ImGui::Text("%s", filePath.c_str());
-        DrawOkCancelModal([&]() { // On Ok ->
+        DrawModalButtonsOkCancel([&]() { // On Ok ->
             if (!filePath.empty()) {
                 SdfLayerRefPtr sessionLayer =_stage->GetSessionLayer();
                 std::function<void()> importSession = [=]() {

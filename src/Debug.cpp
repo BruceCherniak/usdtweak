@@ -63,7 +63,7 @@ static void DrawPlugins() {
             const std::string &plugName = plug->GetName();
             const std::string &plugPath = plug->GetPath();
             bool isLoaded = plug->IsLoaded();
-            if(ImGui::Checkbox(plugName.c_str(), &isLoaded)) {
+            if (ImGui::Checkbox(plugName.c_str(), &isLoaded)) {
                 plug->Load(); // There is no Unload in the API
             }
             ImGui::SameLine();
@@ -77,7 +77,8 @@ static void DrawPlugins() {
 void DrawDebugUI() {
     static const char *const panels[] = {"Timings", "Debug codes", "Trace reporter", "Plugins"};
     static int current_item = 0;
-    ImGui::PushItemWidth(100);
+    const ImGuiContext &g = *GImGui;
+    ImGui::PushItemWidth(g.FontSize * 7); // heuristic
     ImGui::ListBox("##DebugPanels", &current_item, panels, 4);
     ImGui::SameLine();
     if (current_item == 0) {

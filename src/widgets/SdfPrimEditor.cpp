@@ -138,7 +138,7 @@ struct CreateAttributeDialog : public ModalDialog {
 
         ImGui::Checkbox("Custom attribute", &_custom);
         ImGui::Checkbox("Create default value", &_createDefault);
-        DrawOkCancelModal(
+        DrawModalButtonsOkCancel(
             [&]() {
                 ExecuteAfterDraw<PrimCreateAttribute>(_sdfPrim, _attributeName, _typeName, _variability, _custom, _createDefault);
             },
@@ -236,7 +236,7 @@ struct CreateRelationDialog : public ModalDialog {
         }
         ImGui::EndDisabled();
         ImGui::Checkbox("Custom relationship", &_custom);
-        DrawOkCancelModal(
+        DrawModalButtonsOkCancel(
             [=]() {
                 ExecuteAfterDraw<PrimCreateRelationship>(_sdfPrim, _relationName, _variability, _custom, _operation, _targetPath);
             },
@@ -327,7 +327,7 @@ struct CreateSdfAttributeConnectionDialog : public ModalDialog {
             ImGui::EndCombo();
         }
         ImGui::InputText("Path", &_connectionEndPoint);
-        DrawOkCancelModal(
+        DrawModalButtonsOkCancel(
             [&]() { ExecuteAfterDraw<PrimCreateAttributeConnection>(_attribute, _operation, _connectionEndPoint); });
     }
     const char *DialogId() const override { return "Attribute connection"; }

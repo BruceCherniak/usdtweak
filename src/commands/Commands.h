@@ -56,6 +56,7 @@ struct EditorTogglePlayback;
 struct EditorFindPrim;
 struct EditorExportUsdz;
 struct EditorExportFlattenedStage;
+struct EditorScaleUI;
 
 struct LayerRemoveSubLayer;
 struct LayerMoveSubLayer;

@@ -13,6 +13,9 @@
     static int GetApplicationWidth();
     static int GetApplicationHeight();
 
+    // This should not be called during a frame render.
+    static void ScaleUI(float scaleValue);
+
  private:
      static EditorSettings _editorSettings;
      static bool _resourcesLoaded;

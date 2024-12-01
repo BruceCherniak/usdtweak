@@ -19,7 +19,6 @@
 #include "SdfLayerSceneGraphEditor.h"
 #include "FileBrowser.h"
 #include "UsdPrimEditor.h"
-#include "ModalDialogs.h"
 #include "StageOutliner.h"
 #include "Timeline.h"
 #include "ContentBrowser.h"
@@ -39,7 +38,7 @@
 #include "Stamp.h"
 #include "ManipulatorToolbox.h"
 #include "HydraBrowser.h"
-
+#include "Preferences.h"
 namespace clk = std::chrono;
 
 // There is a bug in the Undo/Redo when reloading certain layers, here is the post
@@ -187,7 +186,7 @@ void Editor::ConfirmShutdown(std::string why) {
         }
 
         ImGui::Text("%s", filePath.c_str());
-        DrawOkCancelModal([&]() {
+        DrawModalButtonsOkCancel([&]() {
             if (!filePath.empty()) {
                 if (createStage) {
                     editor.CreateStage(filePath);
@@ -223,7 +222,7 @@ struct OpenUsdFileModalDialog : public ModalDialog {
         }
         auto filePath = GetFileBrowserFilePath();
         ImGui::Text("%s", filePath.c_str());
-        DrawOkCancelModal([&]() {
+        DrawModalButtonsOkCancel([&]() {
             if (!filePath.empty() && FilePathExists()) {
                 if (openAsStage) {
                     editor.OpenStage(filePath, openLoaded);
@@ -254,7 +253,7 @@ struct SaveLayerAsDialog : public ModalDialog {
         }
         auto filePath = GetFileBrowserFilePath();
         ImGui::Text("%s", filePath.c_str());
-        DrawOkCancelModal([&]() { // On Ok ->
+        DrawModalButtonsOkCancel([&]() { // On Ok ->
             if (!filePath.empty()) {
                 editor.SaveLayerAs(_layer, filePath);
             }
@@ -303,7 +302,7 @@ struct ExportStageDialog : public ModalDialog {
         }
         auto filePath = GetFileBrowserFilePath();
         ImGui::Text("%s", filePath.c_str());
-        DrawOkCancelModal([&]() { // On Ok ->
+        DrawModalButtonsOkCancel([&]() { // On Ok ->
             if (!filePath.empty()) {
                 switch (_exportType){
                     case ExportUSDZ:
@@ -783,6 +782,10 @@ void Editor::DrawMainMenuBar() {
             }
             if (ImGui::MenuItem("Paste", "CTRL+V", false, false)) {
             }
+            ImGui::Separator();
+            if (ImGui::MenuItem("Preferences")) {
+                DrawModalDialog<PreferencesModalDialog>(*this);
+            }
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Tools")) {
@@ -830,6 +833,14 @@ void Editor::DrawMainMenuBar() {
     
         ImGui::EndMainMenuBar();
     }
+}
+
+void Editor::ScaleUI(float scaleValue) {
+    _settings._uiScale = scaleValue;
+}
+
+float Editor::GetScaleUI() const {
+    return  _settings._uiScale;
 }
 
 void Editor::Draw() {

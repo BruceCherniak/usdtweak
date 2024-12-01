@@ -14,6 +14,8 @@
 #include "WildcardsCompare.h"
 
 #include "SdfUndoRedoRecorder.h"
+#include "ResourcesLoader.h"
+
 ///
 /// Base class for an editor command, contai ns only a pointer of the editor
 ///
@@ -447,3 +449,17 @@ struct ViewportsSelectScaleManipulator : public EditorCommand {
     }
 };
 template void ExecuteAfterDraw<ViewportsSelectScaleManipulator>();
+
+// We use a command here simply because they run after the drawing
+struct EditorScaleUI : public EditorCommand {
+    EditorScaleUI(float scaleValue) : _scaleValue(scaleValue) {}
+    bool DoIt() override {
+        if (_scaleValue > 0) {
+            _editor->ScaleUI(_scaleValue);
+            // ResourcesLoader::ScaleUI(_scaleValue);
+        }
+        return false;
+    }
+    float _scaleValue;
+};
+template void ExecuteAfterDraw<EditorScaleUI>(float scaleValue);

@@ -36,6 +36,7 @@ inline std::string JoinSemiColon(const ContainerT &container) {
 
 void EditorSettings::ParseLine(const char *line) {
     int value = 0;
+    float valuef;
     char strBuffer[1024];
     strBuffer[0] = 0;
     if (sscanf(line, "ShowLayerEditor=%i", &value) == 1) {
@@ -100,6 +101,8 @@ void EditorSettings::ParseLine(const char *line) {
     } else if (strlen(line) > 19 && std::equal(line, line + 19, "BlueprintLocations=")) {
         std::string blueprintsLine(line + 19);
         SplitSemiColon(blueprintsLine, _blueprintLocations);
+    } else if (sscanf(line, "UiScale=%f", &valuef) == 1) {
+        _uiScale = valuef;
     }
 }
 
@@ -144,7 +147,7 @@ void EditorSettings::Dump(ImGuiTextBuffer *buf) {
     if (!_blueprintLocations.empty()) {
         buf->appendf("BlueprintLocations=%s\n", JoinSemiColon(_blueprintLocations).c_str());
     }
-
+    buf->appendf("UiScale=%f\n", _uiScale);
 }
 
 void EditorSettings::UpdateRecentFiles(const std::string &newFile) {

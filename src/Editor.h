@@ -114,6 +114,8 @@ public:
         }
     }
 
+    void ScaleUI(float scaleValue);
+    float GetScaleUI() const;
 
   private:
     /// Interface with the settings

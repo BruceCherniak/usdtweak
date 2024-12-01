@@ -32,6 +32,7 @@ struct EditorSettings {
     bool _showHydraBrowser = false;
     int _mainWindowWidth;
     int _mainWindowHeight;
+    float _uiScale = 1.f;
 
     /// Last file browser directory
     std::string _lastFileBrowserDirectory;

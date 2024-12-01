@@ -66,7 +66,7 @@ void DrawCurrentModal() {
     BeginPopupModalRecursive(modalDialogStack, 0);
 }
 
-void DrawOkCancelModal(const std::function<void()> &onOk, bool disableOk) {
+void DrawModalButtonsOkCancel(const std::function<void()> &onOk, bool disableOk) {
     // Stretch Ok - Cancel buttons
     const ImVec2 buttonSize(ImVec2(ImGui::GetWindowWidth()/2 - 2 * ImGui::GetStyle().ItemSpacing.x,
                                    ImGui::GetFrameHeight()));
@@ -81,3 +81,12 @@ void DrawOkCancelModal(const std::function<void()> &onOk, bool disableOk) {
     }
     ImGui::EndDisabled();
 }
+
+void DrawModalButtonClose() {
+    const ImVec2 buttonSize(ImVec2(ImGui::GetWindowWidth() - 2 * ImGui::GetStyle().ItemSpacing.x,
+                                   ImGui::GetFrameHeight()));
+    if (ImGui::Button("Close", buttonSize)) {
+        modalDialogStack.back()->CloseModal();
+    }
+}
+

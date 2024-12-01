@@ -110,7 +110,7 @@ struct EditSublayerPath : public ModalDialog {
         } // ... other messages like permission denied, or incorrect extension
         ImGui::SameLine();
         ImGui::Text("%s", insertedFilePath.c_str());
-        DrawOkCancelModal([&]() {
+        DrawModalButtonsOkCancel([&]() {
             if (!insertedFilePath.empty()) {
                 if (!filePathExits && _createLayer) {
                     SdfLayer::CreateNew(filePath); // TODO: in a command

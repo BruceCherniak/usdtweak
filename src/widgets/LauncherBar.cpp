@@ -13,7 +13,7 @@ struct AddLauncherDialog : public ModalDialog {
     void Draw() override {
         ImGui::InputText("Launcher name", &_launcherName);
         ImGui::InputText("Command line", &_commandLine);
-        DrawOkCancelModal([&]() { ExecuteAfterDraw<EditorAddLauncher>(_launcherName, _commandLine); });
+        DrawModalButtonsOkCancel([&]() { ExecuteAfterDraw<EditorAddLauncher>(_launcherName, _commandLine); });
     }
     const char *DialogId() const override { return "Add launcher"; }
 

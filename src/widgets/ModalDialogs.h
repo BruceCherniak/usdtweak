@@ -1,8 +1,6 @@
 #pragma once
 #include <functional>
 
-
-
 // A modal dialog should know how to draw itself
 struct ModalDialog {
     virtual void Draw() = 0;
@@ -16,7 +14,7 @@ extern bool modalOpenTriggered;
 void _PushModalDialog(ModalDialog *);
 
 /// Trigger a modal dialog
-template <typename T, typename... ArgTypes> void DrawModalDialog(ArgTypes &&... args) {
+template <typename T, typename... ArgTypes> void DrawModalDialog(ArgTypes &&...args) {
     modalOpenTriggered = true;
     _PushModalDialog(new T(args...));
 }
@@ -25,7 +23,10 @@ template <typename T, typename... ArgTypes> void DrawModalDialog(ArgTypes &&... 
 void DrawCurrentModal();
 
 /// Convenience function to draw an Ok and Cancel buttons in a Modal dialog
-void DrawOkCancelModal(const std::function<void()> &onOk, bool disableOk=false);
+void DrawModalButtonsOkCancel(const std::function<void()> &onOk, bool disableOk = false);
+
+/// Convenience function to draw an Close button in a Modal dialog
+void DrawModalButtonClose();
 
 /// Force closing the current modal dialog
 void ForceCloseCurrentModal();

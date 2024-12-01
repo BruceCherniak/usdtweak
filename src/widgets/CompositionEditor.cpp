@@ -111,7 +111,7 @@ struct CreateSdfPathModalDialog : public ModalDialog {
             ImGui::EndCombo();
         }
         ImGui::InputText("Target prim path", &_primPath);
-        DrawOkCancelModal([=]() { OnOkCallBack(); });
+        DrawModalButtonsOkCancel([=]() { OnOkCallBack(); });
     }
 
     virtual void OnOkCallBack() = 0;
@@ -172,7 +172,7 @@ struct CreateAssetPathModalDialog : public ModalDialog {
         ImGui::InputText("Target prim path", &_primPath);
         ImGui::InputDouble("Layer time offset", &_timeOffset);
         ImGui::InputDouble("Layer time scale", &_timeScale);
-        DrawOkCancelModal([=]() { OnOkCallBack(); });
+        DrawModalButtonsOkCancel([=]() { OnOkCallBack(); });
     }
 
     virtual void OnOkCallBack() = 0;
