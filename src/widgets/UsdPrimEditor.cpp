@@ -367,6 +367,7 @@ bool DrawVariantSetsCombos(UsdPrim &prim) {
     auto variantSets = prim.GetVariantSets();
 
     if (ImGui::BeginTable("##DrawVariantSetsCombos", 3, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg)) {
+        // make it relative to font size
         ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 24); // 24 => size of the mini button
         ImGui::TableSetupColumn("VariantSet");
         ImGui::TableSetupColumn("");
@@ -419,6 +420,7 @@ bool DrawAssetInfo(UsdPrim &prim) {
         return false;
 
     if (ImGui::BeginTable("##DrawAssetInfo", 3, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg)) {
+        //TODO  make it relative
         ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 24); // 24 => size of the mini button
         ImGui::TableSetupColumn("Asset info");
         ImGui::TableSetupColumn("");

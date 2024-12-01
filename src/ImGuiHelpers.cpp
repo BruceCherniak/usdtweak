@@ -50,7 +50,7 @@ bool ComboWithFilter(const char *label, const char *preview_value, const std::ve
         return false;
 
     const ImGuiStyle &style = g.Style;
-    constexpr int search_bar_height = 5;
+    constexpr int search_bar_height = 5; // TODO
     int items_count = static_cast<int>(items.size());
 
     static int focus_idx = -1;          // index of focused item in items list

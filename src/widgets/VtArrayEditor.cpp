@@ -30,6 +30,7 @@ template <typename ValueT> inline bool DrawVtArray(VtArray<ValueT> &values) {
 
     auto flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_ScrollX;
     if (ImGui::BeginTable("##DrawArrayEditor", 3, flags)) {
+        //TODO: make it relative
         ImGui::TableSetupColumn("One", ImGuiTableColumnFlags_WidthFixed, 55); // size == number of digits in a int * size of 1 digit
         ImGui::TableSetupColumn("Two", ImGuiTableColumnFlags_WidthFixed, 3 * 24);
         ImGui::TableSetupColumn("Three", ImGuiTableColumnFlags_WidthStretch);

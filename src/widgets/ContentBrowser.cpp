@@ -22,7 +22,7 @@ struct SessionLoadModalDialog : public ModalDialog {
     ~SessionLoadModalDialog() override {}
 
     void Draw() override {
-        DrawFileBrowser();
+        DrawFileBrowser(RemainingHeight(2));
         auto filePath = GetFileBrowserFilePath();
         ImGui::Text("%s", filePath.c_str());
         DrawOkCancelModal([&]() { // On Ok ->

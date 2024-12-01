@@ -160,7 +160,10 @@ void DrawStageLayerEditor(UsdStageRefPtr stage) {
     constexpr ImGuiTableFlags tableFlags = ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit;
     if (ImGui::BeginTable("##DrawLayerSublayers", 2, tableFlags)) {
         ImGui::TableSetupColumn("Stage sublayers", ImGuiTableColumnFlags_WidthStretch);
-        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 28 * 5);
+        // TODO make it relative to font size
+        ImGuiContext& g = *GImGui;
+        const float buttonsColumnSize = g.FontSize*8.f; // heuristic for 5 buttons + padding and spacing
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, buttonsColumnSize);
         ImGui::TableHeadersRow();
         ImGui::PushID(0);
         DrawLayerSublayerTree(stage->GetSessionLayer(), SdfLayerRefPtr(), std::string(), stage, 0);

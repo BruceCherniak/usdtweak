@@ -216,7 +216,9 @@ static void DrawBackgroundSelection(const UsdPrim &prim, bool selected) {
     ImVec4 colorSelected = selected ? ImVec4(ColorPrimSelectedBg) : ImVec4(0.75, 0.60, 0.33, 0.2);
     ScopedStyleColor scopedStyle(ImGuiCol_HeaderHovered, selected ? colorSelected : ImVec4(ColorTransparent),
                                  ImGuiCol_HeaderActive, ImVec4(ColorTransparent), ImGuiCol_Header, colorSelected);
-    ImVec2 sizeArg(0.0, TableRowDefaultHeight);
+    //ImVec2 sizeArg(0.0, ImGui::GetFrameHeight());
+    const ImGuiContext &g = *GImGui;
+    ImVec2 sizeArg(0.0, g.FontSize);
     const auto selectableFlags = ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowItemOverlap;
     ImGui::Selectable("##backgroundSelectedPrim", selected, selectableFlags, sizeArg);
     ImGui::SetItemAllowOverlap();
@@ -245,7 +247,7 @@ static void DrawPrimTreeRow(const UsdPrim &prim, Selection &selectedPaths, Stage
             TreeIndenter<StageOutlinerSeed, SdfPath> indenter(prim.GetPath());
             ScopedStyleColor primColor(ImGuiCol_Text, GetPrimColor(prim), ImGuiCol_HeaderHovered, 0, ImGuiCol_HeaderActive, 0);
             const ImGuiID pathHash = IdOf(GetHash(prim.GetPath()));
-
+            //ImGui::AlignTextToFramePadding();
             unfolded = ImGui::TreeNodeBehavior(pathHash, flags, prim.GetName().GetText());
             // TreeSelectionBehavior(selectedPaths, &prim);
             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
@@ -427,13 +429,14 @@ void DrawStageOutliner(UsdStageRefPtr stage, Selection &selectedPaths) {
 
     static SelectionHash lastSelectionHash = 0;
 
-    ImGuiWindow *currentWindow = ImGui::GetCurrentWindow();
-    ImVec2 tableOuterSize(0, currentWindow->Size[1] - 100); // TODO: set the correct size
+    const ImGuiContext &g = *GImGui;
+    const ImVec2 tableOuterSize(0, RemainingHeight(3));
     constexpr ImGuiTableFlags tableFlags = ImGuiTableFlags_SizingFixedFit | /*ImGuiTableFlags_RowBg |*/ ImGuiTableFlags_ScrollY;
     if (ImGui::BeginTable("##DrawStageOutliner", 3, tableFlags, tableOuterSize)) {
         ImGui::TableSetupScrollFreeze(3, 1); // Freeze the root node of the tree (the layer)
         ImGui::TableSetupColumn("Hierarchy");
-        ImGui::TableSetupColumn("V", ImGuiTableColumnFlags_WidthFixed, 40);
+        // TODO make it relative to font size
+        ImGui::TableSetupColumn("V", ImGuiTableColumnFlags_WidthFixed, g.FontSize*3);
         ImGui::TableSetupColumn("Type");
 
         // Unfold the selected path

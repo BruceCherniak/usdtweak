@@ -54,7 +54,7 @@ struct EditorSettings {
     // in 2 vectors instead of a map, it is more efficient as the code iterates on the command name list
     bool AddLauncher(const std::string &commandName, const std::string &commandLine);
     bool RemoveLauncher(const std::string &commandName);
-    const std::vector<std::string> &GetLauncheNameList() const { return _launcherNames; };
+    const std::vector<std::string> &GetLauncherNameList() const { return _launcherNames; };
     std::string GetLauncherCommandLine(const std::string &commandName) const;
 
     // Serialization functions

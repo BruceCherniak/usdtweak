@@ -35,6 +35,7 @@
 #include "Playblast.h"
 #include "Blueprints.h"
 #include "UsdHelpers.h"
+#include "ImGuiHelpers.h"
 #include "Stamp.h"
 #include "ManipulatorToolbox.h"
 #include "HydraBrowser.h"
@@ -170,7 +171,7 @@ void Editor::ConfirmShutdown(std::string why) {
     CreateUsdFileModalDialog(Editor &editor) : editor(editor), createStage(true) { ResetFileBrowserFilePath(); };
 
     void Draw() override {
-        DrawFileBrowser();
+        DrawFileBrowser(RemainingHeight(4)); // 4 widgets (checkbox)
         EnsureFileBrowserDefaultExtension("usd");
         auto filePath = GetFileBrowserFilePath();
         ImGui::Checkbox("Open as stage", &createStage);
@@ -208,16 +209,17 @@ struct OpenUsdFileModalDialog : public ModalDialog {
     OpenUsdFileModalDialog(Editor &editor) : editor(editor) { SetValidExtensions(GetUsdValidExtensions()); };
     ~OpenUsdFileModalDialog() override {}
     void Draw() override {
-        DrawFileBrowser();
+        DrawFileBrowser(RemainingHeight(3)); // 3 extra line widgets
 
-        if (FilePathExists()) {
-            ImGui::Checkbox("Open as stage", &openAsStage);
-            if (openAsStage) {
-                ImGui::SameLine();
-                ImGui::Checkbox("Load payloads", &openLoaded);
-            }
-        } else {
+        // TODO : deactivate widgets
+        ImGui::Checkbox("Open as stage", &openAsStage);
+        if (openAsStage) {
+            ImGui::SameLine();
+            ImGui::Checkbox("Load payloads", &openLoaded);
+        }
+        if (!FilePathExists()) {
             ImGui::Text("Not found: ");
+            ImGui::SameLine();
         }
         auto filePath = GetFileBrowserFilePath();
         ImGui::Text("%s", filePath.c_str());
@@ -243,7 +245,7 @@ struct SaveLayerAsDialog : public ModalDialog {
     SaveLayerAsDialog(Editor &editor, SdfLayerRefPtr layer) : editor(editor), _layer(layer) {};
     ~SaveLayerAsDialog() override {}
     void Draw() override {
-        DrawFileBrowser();
+        DrawFileBrowser(RemainingHeight(3));
         EnsureFileBrowserDefaultExtension("usd");
         if (FilePathExists()) {
             ImGui::TextColored(ImVec4(1.0f, 0.1f, 0.1f, 1.0f), "Overwrite: ");
@@ -284,7 +286,7 @@ struct ExportStageDialog : public ModalDialog {
     };
     ~ExportStageDialog() override {}
     void Draw() override {
-        DrawFileBrowser();
+        DrawFileBrowser(RemainingHeight(3));
         switch (_exportType) {
             case ExportUSDZ: // falls through
             case ExportArKit:

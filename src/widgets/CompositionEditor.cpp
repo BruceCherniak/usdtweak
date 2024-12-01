@@ -152,7 +152,7 @@ struct CreateAssetPathModalDialog : public ModalDialog {
             ImGui::OpenPopup("Asset path browser");
         }
         if (ImGui::BeginPopupModal("Asset path browser")) {
-            DrawFileBrowser();
+            DrawFileBrowser(RemainingHeight(7));
             ImGui::Checkbox("Use relative path", &_relative);
             ImGui::Checkbox("Unix compatible", &_unixify);
             if (ImGui::Button("Use selected file")) {

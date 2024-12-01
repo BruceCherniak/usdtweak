@@ -99,7 +99,8 @@ static void DrawBackgroundSelection(const SdfPrimSpecHandle &currentPrim, const 
     ImVec4 colorSelected = selected ? ImVec4(ColorPrimSelectedBg) : ImVec4(0.75, 0.60, 0.33, 0.2);
     ScopedStyleColor scopedStyle(ImGuiCol_HeaderHovered, selected ? colorSelected : ImVec4(ColorTransparent),
                                  ImGuiCol_HeaderActive, ImVec4(ColorTransparent), ImGuiCol_Header, colorSelected);
-    ImVec2 sizeArg(0.0, TableRowDefaultHeight);
+    
+    ImVec2 sizeArg(0.0, ImGui::GetFrameHeight());
     const auto selectableFlags = ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowItemOverlap;
     if (ImGui::Selectable("##backgroundSelectedPrim", selected, selectableFlags, sizeArg)) {
         if (currentPrim) {
@@ -238,6 +239,7 @@ static bool DrawTreeNodePrimName(const bool &primIsVariant, SdfPrimSpecHandle &p
     ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_AllowItemOverlap;
     nodeFlags |= hasChildren && !primSpec->HasVariantSetNames() ? ImGuiTreeNodeFlags_Leaf
                                                                 : ImGuiTreeNodeFlags_None; // ImGuiTreeNodeFlags_DefaultOpen;
+    ImGui::AlignTextToFramePadding();
     auto cursor = ImGui::GetCursorPos(); // Store position for the InputText to edit the prim name
     auto unfolded = ImGui::TreeNodeBehavior(IdOf(primSpec->GetPath().GetHash()), nodeFlags, primSpecName.c_str());
 
@@ -466,11 +468,14 @@ void DrawLayerPrimHierarchy(SdfLayerRefPtr layer, const Selection &selection) {
     DrawLayerNavigation(layer);
     auto flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY;
 
+    ImGuiContext& g = *GImGui;
+    const float specColWidth = g.FontSize*3.f; // heuristic width for "Class"
+    const float typeColWidth = g.FontSize*6.f; // heuristic width for the largest type seen so far
     if (ImGui::BeginTable("##DrawArrayEditor", 4, flags)) {
         ImGui::TableSetupScrollFreeze(4, 1);
         ImGui::TableSetupColumn("Prim hierarchy");
-        ImGui::TableSetupColumn("Spec", ImGuiTableColumnFlags_WidthFixed, 40);
-        ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, 150);
+        ImGui::TableSetupColumn("Spec", ImGuiTableColumnFlags_WidthFixed, specColWidth);
+        ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, typeColWidth);
         ImGui::TableSetupColumn("Composition");
 
         ImGui::TableHeadersRow();

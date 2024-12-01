@@ -236,8 +236,7 @@ static void DrawFileSize(uintmax_t fileSize) {
     ImGui::Text(format[i], fileSize);
 }
 
-void DrawFileBrowser(int gutterSize) {
-
+void DrawFileBrowser(int height) {
 
     static fs::path displayedFileName;
     static std::vector<fs::directory_entry> directoryContent;
@@ -302,17 +301,20 @@ void DrawFileBrowser(int gutterSize) {
     mustUpdateDirectoryContent |= directoryContentPath != displayedDirectory;
     mustUpdateDirectoryContent |= DrawRefreshButton();
     ImGui::SameLine();
-    mustUpdateDirectoryContent |= DrawNavigationBar(displayedDirectory);
-
+    mustUpdateDirectoryContent |= DrawNavigationBar(displayedDirectory);    height -= ImGui::GetFrameHeight(); // remove the height of the navigation bar
     if (mustUpdateDirectoryContent) {
         UpdateDirectoryContent();
     }
 
     // Get window size
-    ImGuiWindow *currentWindow = ImGui::GetCurrentWindow();
-    // TODO: 190 should be computed or passed in parameter as there might be other widget taking height
-    ImVec2 sizeArg(0, currentWindow->Size[1] - gutterSize);
-    ImGui::PushItemWidth(-1); // List takes the full size
+    //ImGuiWindow *currentWindow = ImGui::GetCurrentWindow();
+    
+    // We want to compute the height of the file list, so we need to remove the
+    // navigation bar height and the filename textbox from the total height
+    height -= 2*ImGui::GetFrameHeightWithSpacing(); // remove the height of the navigation bar
+    
+    ImVec2 sizeArg(-1, height);
+    ImGui::PushItemWidth(-1); // List takes the full width
     if (ImGui::BeginListBox("##FileList", sizeArg)) {
         constexpr ImGuiTableFlags tableFlags = ImGuiTableFlags_RowBg;
         if (ImGui::BeginTable("Files", 4, tableFlags)) {

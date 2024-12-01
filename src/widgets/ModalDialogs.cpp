@@ -67,15 +67,15 @@ void DrawCurrentModal() {
 }
 
 void DrawOkCancelModal(const std::function<void()> &onOk, bool disableOk) {
-    // Align right
-    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetWindowWidth() - 3 * ImGui::CalcTextSize(" Cancel ").x -
-                         ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
-    if (ImGui::Button(" Cancel ")) {
+    // Stretch Ok - Cancel buttons
+    const ImVec2 buttonSize(ImVec2(ImGui::GetWindowWidth()/2 - 2 * ImGui::GetStyle().ItemSpacing.x,
+                                   ImGui::GetFrameHeight()));
+    if (ImGui::Button("Cancel", buttonSize)) {
         modalDialogStack.back()->CloseModal();
     }
     ImGui::SameLine();
     ImGui::BeginDisabled(disableOk);
-    if (ImGui::Button("   Ok   ")) {
+    if (ImGui::Button("Ok", buttonSize)) {
         onOk();
         modalDialogStack.back()->CloseModal();
     }

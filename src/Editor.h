@@ -97,7 +97,7 @@ public:
     void ShowDialogSaveLayerAs(SdfLayerHandle layerToSaveAs);
 
     // Launcher functions
-    const std::vector<std::string> &GetLauncherNameList() const { return _settings.GetLauncheNameList(); }
+    const std::vector<std::string> &GetLauncherNameList() const { return _settings.GetLauncherNameList(); }
     bool AddLauncher(const std::string &launcherName, const std::string &commandLine) {
         return _settings.AddLauncher(launcherName, commandLine);
     }
