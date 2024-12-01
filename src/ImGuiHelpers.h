@@ -82,6 +82,12 @@ template <ImU32 seed, typename PathT> struct TreeIndenter {
 inline
 int RemainingHeight(int nbLines) {
     const ImGuiWindow *currentWindow = ImGui::GetCurrentWindow();
-    ImGuiContext& g = *GImGui;
+    const ImGuiContext& g = *GImGui;
     return currentWindow->Size[1] - nbLines*ImGui::GetFrameHeightWithSpacing() - g.Style.FramePadding.y * 2.0f - g.Style.ItemSpacing.y * 2.0f;
+}
+
+inline
+float GetMiniButtonSize() {
+    const ImGuiContext& g = *GImGui;
+    return g.FontSize * 1.4;
 }

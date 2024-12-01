@@ -22,7 +22,7 @@ void DrawTextEditor(SdfLayerRefPtr layer) {
     }
     ImGui::PushItemWidth(-FLT_MIN);
     ImGuiWindow *currentWindow = ImGui::GetCurrentWindow();
-    ImVec2 sizeArg(0, currentWindow->Size[1] - 120);
+    ImVec2 sizeArg(0, RemainingHeight(4));
     ImGui::PushFont(io.Fonts->Fonts[1]);
     {
         ScopedStyleColor color(ImGuiCol_FrameBg, ImVec4{0.0, 0.0, 0.0, 1.0});

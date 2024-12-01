@@ -368,7 +368,7 @@ bool DrawVariantSetsCombos(UsdPrim &prim) {
 
     if (ImGui::BeginTable("##DrawVariantSetsCombos", 3, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg)) {
         // make it relative to font size
-        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 24); // 24 => size of the mini button
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, GetMiniButtonSize());
         ImGui::TableSetupColumn("VariantSet");
         ImGui::TableSetupColumn("");
 
@@ -421,7 +421,7 @@ bool DrawAssetInfo(UsdPrim &prim) {
 
     if (ImGui::BeginTable("##DrawAssetInfo", 3, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg)) {
         //TODO  make it relative
-        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 24); // 24 => size of the mini button
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, GetMiniButtonSize());
         ImGui::TableSetupColumn("Asset info");
         ImGui::TableSetupColumn("");
 
@@ -515,7 +515,7 @@ bool DrawMaterialBindings(const UsdPrim &prim) {
 
     UsdShadeMaterialBindingAPI materialBindingAPI(prim);
     if (ImGui::BeginTable("##DrawPropertyEditorHeader", 3, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg)) {
-        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 24); // 24 => size of the mini button
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, GetMiniButtonSize());
         ImGui::TableSetupColumn("Material Bindings");
         ImGui::TableSetupColumn("");
         ImGui::TableHeadersRow();
@@ -633,7 +633,7 @@ void DrawUsdPrimHeader(UsdPrim &prim) {
     const SdfPath targetPath = editTarget.MapToSpecPath(prim.GetPath());
 
     if (ImGui::BeginTable("##DrawPropertyEditorHeader", 3, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg)) {
-        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 24); // 24 => size of the mini button
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, GetMiniButtonSize());
         ImGui::TableSetupColumn("Identity");
         ImGui::TableSetupColumn("Value");
         ImGui::TableHeadersRow();
@@ -711,7 +711,7 @@ void DrawUsdPrimProperties(UsdPrim &prim, UsdTimeCode currentTime) {
         }
 
         if (ImGui::BeginTable("##DrawPropertyEditorTable", 3, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg)) {
-            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 24); // 24 => size of the mini button
+            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, GetMiniButtonSize());
             ImGui::TableSetupColumn("Property name");
             ImGui::TableSetupColumn("Value");
             ImGui::TableHeadersRow();

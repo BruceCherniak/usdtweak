@@ -6,7 +6,8 @@
 // The easiest version of a timeline: a slider
 void DrawTimeline(UsdStageRefPtr stage, UsdTimeCode &currentTimeCode) {
     const bool hasStage = stage;
-    constexpr int widgetWidth = 80;
+    const ImGuiContext& g = *GImGui;
+    const float widgetWidth = g.FontSize * 4.f; // heuristic
     int startTime = hasStage ? static_cast<int>(stage->GetStartTimeCode()) : 0;
     int endTime = hasStage ? static_cast<int>(stage->GetEndTimeCode()) : 0;
 
@@ -22,7 +23,7 @@ void DrawTimeline(UsdStageRefPtr stage, UsdTimeCode &currentTimeCode) {
     // Frame Slider
     ImGui::SameLine();
     ImGui::PushItemWidth(ImGui::GetWindowWidth() -
-                         6 * widgetWidth); // 6 to account for the 5 input widgets and the space between them
+                         5 * widgetWidth - 7 * g.Style.ItemSpacing.x ); // 5 to account for the 5 input widgets and the space between them
     int currentTimeSlider = static_cast<int>(currentTimeCode.GetValue());
     if (ImGui::SliderInt("##SliderFrame", &currentTimeSlider, startTime, endTime)) {
         currentTimeCode = static_cast<UsdTimeCode>(currentTimeSlider);

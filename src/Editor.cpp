@@ -990,9 +990,9 @@ void Editor::Draw() {
             DrawSdfPrimEditor(selectedPrimSpec, GetSelection());
         } else {
             auto headerSize = ImGui::GetWindowSize();
-            headerSize.y = TableRowDefaultHeight * 3; // 3 fields in the header
-            headerSize.x = -FLT_MIN;
             DrawSdfLayerEditorMenuBar(GetCurrentLayer()); // TODO: write a menu for layer
+            headerSize.y = ImGui::GetFrameHeight() * 3; // 3 fields in the header
+            headerSize.x = -FLT_MIN;
             ImGui::BeginChild("##LayerHeader", headerSize);
             DrawSdfLayerIdentity(GetCurrentLayer(), SdfPath::AbsoluteRootPath());
             ImGui::EndChild();

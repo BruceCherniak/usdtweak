@@ -889,7 +889,7 @@ void DrawSdfPrimEditor(const SdfPrimSpecHandle &primSpec, const Selection &selec
     if (!primSpec)
         return;
     auto headerSize = ImGui::GetWindowSize();
-    headerSize.y = TableRowDefaultHeight * 3; // 3 fields in the header
+    headerSize.y = ImGui::GetFrameHeight() * 3; // 3 fields in the header
     headerSize.x = -FLT_MIN;
     ImGui::BeginChild("##LayerHeader", headerSize);
     DrawSdfLayerIdentity(primSpec->GetLayer(), primSpec->GetPath()); // TODO rename to DrawUsdObjectInfo()

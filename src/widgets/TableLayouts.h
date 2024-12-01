@@ -57,7 +57,7 @@ inline void EndThreeColumnsTable() { ImGui::EndTable(); }
 inline void SetupThreeColumnsTable(const bool showHeaders, const char *button = "", const char *field = "Field",
                                         const char *value = "Value") {
     // TODO make it relative to font size
-    ImGui::TableSetupColumn(button, ImGuiTableColumnFlags_WidthFixed, 24); // 24 => size of the mini button
+    ImGui::TableSetupColumn(button, ImGuiTableColumnFlags_WidthFixed, GetMiniButtonSize());
     ImGui::TableSetupColumn(field, ImGuiTableColumnFlags_WidthFixed);
     ImGui::TableSetupColumn(value, ImGuiTableColumnFlags_WidthStretch);
     if (showHeaders) {

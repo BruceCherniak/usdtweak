@@ -471,12 +471,12 @@ void DrawStageOutliner(UsdStageRefPtr stage, Selection &selectedPaths) {
             FocusedOnFirstSelectedPath(selectedPaths.GetAnchorPrimPath(stage), paths, clipper);
         }
         ImGui::EndTable();
-        
     }
 
     // Search prim bar
     static char patternBuffer[256];
     static bool useRegex = false;
+    ImGui::SetNextItemWidth(ImGui::GetCurrentWindow()->Size[0]-g.FontSize * 12);
     auto enterPressed = ImGui::InputTextWithHint("##SearchPrims", "Find prim", patternBuffer, 256, ImGuiInputTextFlags_EnterReturnsTrue);
     ImGui::SameLine();
     ImGui::Checkbox("use regex", &useRegex);

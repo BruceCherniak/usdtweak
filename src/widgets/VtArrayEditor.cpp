@@ -1,6 +1,7 @@
 #include "VtArrayEditor.h"
 #include "Commands.h"
 #include "Gui.h"
+#include "ImGuiHelpers.h"
 #include "VtValueEditor.h"
 #include <iostream>
 #include <pxr/base/gf/matrix2d.h>
@@ -30,9 +31,9 @@ template <typename ValueT> inline bool DrawVtArray(VtArray<ValueT> &values) {
 
     auto flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_ScrollX;
     if (ImGui::BeginTable("##DrawArrayEditor", 3, flags)) {
-        //TODO: make it relative
-        ImGui::TableSetupColumn("One", ImGuiTableColumnFlags_WidthFixed, 55); // size == number of digits in a int * size of 1 digit
-        ImGui::TableSetupColumn("Two", ImGuiTableColumnFlags_WidthFixed, 3 * 24);
+        const ImGuiContext& g = *GImGui;
+        ImGui::TableSetupColumn("One", ImGuiTableColumnFlags_WidthFixed, 3.5 * g.FontSize);
+        ImGui::TableSetupColumn("Two", ImGuiTableColumnFlags_WidthFixed, 3.5 * GetMiniButtonSize());
         ImGui::TableSetupColumn("Three", ImGuiTableColumnFlags_WidthStretch);
 
         VtValue newResult;
