@@ -217,11 +217,17 @@ int main(int argc, char *const *argv) {
         }
         editor.RemoveCallbacks(window);
     }
-    ImGui::DestroyContext(hydraUIContext);
 
+    // Destroy hydraUI context
+    ImGui::SetCurrentContext(hydraUIContext);
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui::DestroyContext(hydraUIContext);
+    
     // Shutdown imgui
+    ImGui::SetCurrentContext(mainUIContext);
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
+    // The context is destroyed by the Resource object
 
     // Shutdown glfw
     glfwDestroyWindow(window);

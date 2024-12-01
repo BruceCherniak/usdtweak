@@ -119,9 +119,9 @@ bool ComboWithFilter(const char *label, const char *preview_value, const std::ve
     ImGui::InputTextWithHint("##ComboWithFilter_inputText", "Search", pattern_buffer, 256);
 
     int move_delta = 0;
-    if (ImGui::IsKeyPressedMap(ImGuiKey_UpArrow)) {
+    if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
         --move_delta;
-    } else if (ImGui::IsKeyPressedMap(ImGuiKey_DownArrow)) {
+    } else if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
         ++move_delta;
     }
 
@@ -158,7 +158,7 @@ bool ComboWithFilter(const char *label, const char *preview_value, const std::ve
         }
         ImGui::EndListBox();
 
-        if (ImGui::IsKeyPressedMap(ImGuiKey_Enter)) {
+        if (ImGui::IsKeyPressed(ImGuiKey_Enter)) {
             value_changed = true;
             *current_item = focus_idx;
             ImGui::CloseCurrentPopup();
