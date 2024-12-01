@@ -164,7 +164,6 @@ void PositionManipulator::OnDrawFrame(const Viewport &viewport) {
 
 void PositionManipulator::OnBeginEdition(Viewport &viewport) {
     // Save original translation values
-    GfVec3f scale, pivot, rotation;
     GfMatrix4d localTransform;
     bool resetsXformStack = false;
     _xformable.GetLocalTransformation(&localTransform, &resetsXformStack, viewport.GetCurrentTimeCode());
