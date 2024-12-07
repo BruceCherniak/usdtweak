@@ -78,12 +78,18 @@ template <ImU32 seed, typename PathT> struct TreeIndenter {
     std::vector<PathT> prefixes;
 };
 
-/// Compute the remaining height on the current window when it contains nbLines of text based widgets
+/// Compute the remaining height on the current window when it contains a certain number of "inline" widgets
+/// This is an lower bound estimate rather than an exact value as the text lines are generally
+/// smaller than the inline widget.
 inline
-int RemainingHeight(int nbLines) {
+float RemainingHeight(int nbLines) {
     const ImGuiWindow *currentWindow = ImGui::GetCurrentWindow();
     const ImGuiContext& g = *GImGui;
-    return currentWindow->Size[1] - nbLines*ImGui::GetFrameHeightWithSpacing() - g.Style.FramePadding.y * 2.0f - g.Style.ItemSpacing.y * 2.0f;
+    return currentWindow->Size[1]
+    - nbLines*ImGui::GetFrameHeightWithSpacing()
+    - g.Style.FramePadding.y * 4.0f
+    - g.Style.ItemSpacing.y * 4.0f // Account for the other widget
+    - g.Style.WindowPadding.y * 2.0f;
 }
 
 inline

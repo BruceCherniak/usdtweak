@@ -14,9 +14,13 @@
 #include <pxr/usd/sdf/propertySpec.h>
 
 // The clipper has precision errors when there are millions of elements in the array, it doesn't compute the height of the widgets properly.
-// As a solution we pass the precomputed height of a line. This is not great, but that's the easiest solution for the moment.
+// As a solution we pass a estimate, the font size.
+// This is not great, but that's the easiest solution for the moment.
 // TODO: fill an issue on the ImGui github 
-template <typename ValueT> inline int HeightOf() { return 26; }
+template <typename ValueT> inline int HeightOf() {
+    const ImGuiContext& g = *GImGui;
+    return ImGui::GetFrameHeightWithSpacing();
+}
 template <> int HeightOf<GfMatrix4d>() { return HeightOf<double>() * 4; }
 template <> int HeightOf<GfMatrix4f>() { return HeightOf<float>() * 4; }
 template <> int HeightOf<GfMatrix3d>() { return HeightOf<double>() * 3; }

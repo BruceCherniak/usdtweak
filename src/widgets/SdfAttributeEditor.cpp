@@ -233,7 +233,7 @@ static void DrawSdfAttributeMetadata(SdfAttributeSpecHandle attr) {
     }
 }
 
-#define LEFT_PANE_WIDTH 140
+static inline float LeftPaneWidth() {const ImGuiContext &g = *GImGui;return g.FontSize * 7;}
 
 static void DrawTimeSamplesEditor(const SdfAttributeSpecHandle &attr, SdfTimeSampleMap &timeSamples,
                                   UsdTimeCode &selectedKeyframe) {
@@ -254,7 +254,7 @@ static void DrawTimeSamplesEditor(const SdfAttributeSpecHandle &attr, SdfTimeSam
         }
     }
 
-    if (ImGui::BeginListBox("##Time", ImVec2(LEFT_PANE_WIDTH - 20, -FLT_MIN))) { // -20 to account for the scroll bar
+    if (ImGui::BeginListBox("##Time", ImVec2(LeftPaneWidth(), -FLT_MIN))) {
         if (attr->HasDefaultValue()) {
             if (ImGui::Selectable("Default", selectedKeyframe == UsdTimeCode::Default())) {
                 selectedKeyframe = UsdTimeCode::Default();
@@ -318,11 +318,11 @@ void DrawSdfAttributeEditor(const SdfLayerHandle layer, const Selection &selecti
 
             // Left pane with the time samples
             ScopedStyleColor col(ImGuiCol_FrameBg, ImVec4(0.260f, 0.300f, 0.360f, 1.000f));
-            ImGui::BeginChild("left pane", ImVec2(LEFT_PANE_WIDTH, 0), true); // TODO variable width
+            ImGui::BeginChild("left pane", ImVec2(LeftPaneWidth(), -1), true);
             DrawTimeSamplesEditor(attr, timeSamples, selectedKeyframe);
             ImGui::EndChild();
             ImGui::SameLine();
-            ImGui::BeginChild("value", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
+            ImGui::BeginChild("value", ImVec2(-1, -ImGui::GetFrameHeightWithSpacing()));
             DrawSamplesAtTimeCode(attr, timeSamples, selectedKeyframe);
             ImGui::EndChild();
             ImGui::EndTabItem();

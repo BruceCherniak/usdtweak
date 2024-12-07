@@ -10,8 +10,8 @@ constexpr float PI_F = 3.14159265;
 constexpr int InitialWindowWidth = 1024;
 constexpr int InitialWindowHeight = 1024;
 
-/// Height of a row in the property editor
-constexpr float TableRowDefaultHeight = 22.f;
+/// Min height of a row in the property editor
+#define TableRowMinHeight ImGui::GetFrameHeight()
 
 /// Waiting time before a tooltip shows up
 constexpr float TimeBeforeTooltip = 2.f; // 2 seconds

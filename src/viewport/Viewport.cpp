@@ -16,6 +16,8 @@
 #include "Constants.h"
 #include "Shortcuts.h"
 #include "UsdPrimEditor.h" // DrawUsdPrimEditTarget
+#include "ResourcesLoader.h"
+#include "ViewportSettings.h"
 
 namespace clk = std::chrono;
 
@@ -70,6 +72,11 @@ Viewport::Viewport(UsdStageRefPtr stage, Selection &selection)
     auto color = _drawTarget->GetAttachment("color");
     _textureId = color->GetGlTextureName();
     _drawTarget->Unbind();
+    
+
+    // Default settings at construction time
+    ViewportSettings _defaultSettings = ResourcesLoader::GetViewportSettings();
+    _imagingSettings.enableSceneMaterials = _defaultSettings._useMaterials;
 }
 
 Viewport::~Viewport() {

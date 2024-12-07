@@ -430,7 +430,7 @@ void DrawStageOutliner(UsdStageRefPtr stage, Selection &selectedPaths) {
     static SelectionHash lastSelectionHash = 0;
 
     const ImGuiContext &g = *GImGui;
-    const ImVec2 tableOuterSize(0, RemainingHeight(3));
+    const ImVec2 tableOuterSize(0, RemainingHeight(2));
     constexpr ImGuiTableFlags tableFlags = ImGuiTableFlags_SizingFixedFit | /*ImGuiTableFlags_RowBg |*/ ImGuiTableFlags_ScrollY;
     if (ImGui::BeginTable("##DrawStageOutliner", 3, tableFlags, tableOuterSize)) {
         ImGui::TableSetupScrollFreeze(3, 1); // Freeze the root node of the tree (the layer)

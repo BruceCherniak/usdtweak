@@ -404,8 +404,8 @@ void DrawCompositionArcRow(int rowId, const SdfPrimSpecHandle &primSpec, const C
     // Arbitrary outer size for the reference editor
     using ItemType = typename ArcListItemTrait<CompositionArcT>::type;
     const ImGuiContext& g = *GImGui;
-    const float regionAvailable = ImGui::GetWindowWidth() - 4.5 * GetMiniButtonSize(); // 2 mini buttons + space + scrollbar
-    ImVec2 outerSize(regionAvailable, TableRowDefaultHeight);
+    const float regionAvailable = ImGui::GetWindowWidth() - 4.5 * GetMiniButtonSize(); // ~ 2 mini buttons + space + scrollbar
+    ImVec2 outerSize(regionAvailable, TableRowMinHeight);
     CompositionArcT updatedArc = DrawCompositionArcEditor(primSpec, arc, outerSize);
     if (updatedArc != CompositionArcT()) {
         std::function<void()> updateReferenceFun = [=]() {

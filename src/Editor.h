@@ -143,6 +143,8 @@ public:
 
     ///
     /// Editor settings contains the persisted data
+    /// It could be a reference to the EditorSettings stored in the resourceLoader
+    /// instead of a copy, but we keep it as copy for locality
     ///
     EditorSettings _settings;
 

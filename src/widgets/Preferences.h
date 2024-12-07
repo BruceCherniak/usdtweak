@@ -2,7 +2,8 @@
 #include "ModalDialogs.h"
 class Editor;
 
- struct PreferencesModalDialog : public ModalDialog {
+// Modal dialog for the preference panel
+struct PreferencesModalDialog : public ModalDialog {
 
     PreferencesModalDialog(Editor &editor);
 

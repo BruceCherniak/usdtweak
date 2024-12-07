@@ -78,7 +78,7 @@ void DrawDebugUI() {
     static const char *const panels[] = {"Timings", "Debug codes", "Trace reporter", "Plugins"};
     static int current_item = 0;
     const ImGuiContext &g = *GImGui;
-    ImGui::PushItemWidth(g.FontSize * 7); // heuristic
+    ImGui::PushItemWidth(g.FontSize * 7); // heuristic for the text in the list box
     ImGui::ListBox("##DebugPanels", &current_item, panels, 4);
     ImGui::SameLine();
     if (current_item == 0) {

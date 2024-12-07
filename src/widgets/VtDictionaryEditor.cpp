@@ -85,7 +85,7 @@ VtValue DrawDictionaryRows(const VtValue &dictValue, const std::string &dictName
 
     ScopedStyleColor style = GetRowStyle<VtDictionary>(0, dictValue);
 
-    ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowDefaultHeight);
+    ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowMinHeight);
     ImGui::TableSetColumnIndex(0);
     ImGui::Button(ICON_FA_BOOK_OPEN);
     {
@@ -129,7 +129,7 @@ VtValue DrawDictionaryRows(const VtValue &dictValue, const std::string &dictName
                 }
             } else {
                 // TODO: drawTableRow here ?
-                ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowDefaultHeight);
+                ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowMinHeight);
                 ImGui::TableSetColumnIndex(0);
 
                 ImGui::PushID(item.first.c_str()); // FOR THE BUTTON

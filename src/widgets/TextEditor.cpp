@@ -18,11 +18,14 @@ void DrawTextEditor(SdfLayerRefPtr layer) {
     ImGui::Text("        and will consume lots of memory. Use with care for now");
     if (layer) {
         layer->ExportToString(&layerText);
-        ImGui::Text("%s", layer->GetDisplayName().c_str());
+        ImGui::Text("Editing: %s", layer->GetDisplayName().c_str());
+    } else {
+        ImGui::Text("No layer loader");
     }
+    ImGui::Text("Ctrl+Enter to apply your change");
     ImGui::PushItemWidth(-FLT_MIN);
     ImGuiWindow *currentWindow = ImGui::GetCurrentWindow();
-    ImVec2 sizeArg(0, RemainingHeight(4));
+    ImVec2 sizeArg(0, -1);
     ImGui::PushFont(io.Fonts->Fonts[1]);
     {
         ScopedStyleColor color(ImGuiCol_FrameBg, ImVec4{0.0, 0.0, 0.0, 1.0});
@@ -34,5 +37,4 @@ void DrawTextEditor(SdfLayerRefPtr layer) {
     }
     ImGui::PopFont();
     ImGui::PopItemWidth();
-    ImGui::Text("Ctrl+Enter to apply your change");
 }

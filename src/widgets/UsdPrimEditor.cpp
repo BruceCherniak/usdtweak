@@ -522,7 +522,7 @@ bool DrawMaterialBindings(const UsdPrim &prim) {
         UsdShadeMaterial material;
         for (const auto &purpose : materialBindingAPI.GetMaterialPurposes()) {
             const std::string &purposeName = purpose.GetString();
-            ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowDefaultHeight);
+            ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowMinHeight);
             
             ImGui::TableSetColumnIndex(0);
             ImGui::PushID(purposeName.c_str());
@@ -637,13 +637,13 @@ void DrawUsdPrimHeader(UsdPrim &prim) {
         ImGui::TableSetupColumn("Identity");
         ImGui::TableSetupColumn("Value");
         ImGui::TableHeadersRow();
-        ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowDefaultHeight);
+        ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowMinHeight);
         ImGui::TableSetColumnIndex(1);
         ImGui::Text("Stage");
         ImGui::TableSetColumnIndex(2);
         ImGui::Text("%s", prim.GetStage()->GetRootLayer()->GetIdentifier().c_str());
 
-        ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowDefaultHeight);
+        ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowMinHeight);
         ImGui::TableSetColumnIndex(1);
         ImGui::Text("Path");
         ImGui::TableSetColumnIndex(2);
@@ -651,7 +651,7 @@ void DrawUsdPrimHeader(UsdPrim &prim) {
             ScopedStyleColor pathColor(ImGuiCol_Text, GetPrimColor(prim));
             ImGui::Text("%s", prim.GetPrimPath().GetString().c_str());
         }
-        ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowDefaultHeight);
+        ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowMinHeight);
         ImGui::TableSetColumnIndex(0);
         DrawPropertyMiniButton(ICON_FA_PEN);
         ImGuiPopupFlags flags = ImGuiPopupFlags_MouseButtonLeft;
@@ -669,7 +669,7 @@ void DrawUsdPrimHeader(UsdPrim &prim) {
             ImGui::Text("%s %s", editTarget.GetLayer()->GetDisplayName().c_str(), targetPath.GetString().c_str());
         }
 
-        ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowDefaultHeight);
+        ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowMinHeight);
         ImGui::TableSetColumnIndex(1);
         ImGui::Text("Type");
         ImGui::TableSetColumnIndex(2);
@@ -685,7 +685,7 @@ void DrawUsdPrimProperties(UsdPrim &prim, UsdTimeCode currentTime) {
 
     if (prim) {
         auto headerSize = ImGui::GetWindowSize();
-        headerSize.y = TableRowDefaultHeight*5; // 5 rows (4 + header)
+        headerSize.y = ImGui::GetFrameHeight()*5; // 5 rows (4 + header)
         headerSize.x = -FLT_MIN; // expand as much as possible
         ImGui::BeginChild("##Header", headerSize);
         DrawUsdPrimHeader(prim);
@@ -721,7 +721,7 @@ void DrawUsdPrimProperties(UsdPrim &prim, UsdTimeCode currentTime) {
 
             // Draw attributes
             for (auto &attribute : prim.GetAttributes()) {
-                ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowDefaultHeight);
+                ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowMinHeight);
                 ImGui::TableSetColumnIndex(0);
                 ImGui::PushID(miniButtonId++);
                 DrawPropertyMiniButton(attribute, editTarget, currentTime);

@@ -85,7 +85,7 @@ struct EditSublayerPath : public ModalDialog {
     };
 
     void Draw() override {
-        DrawFileBrowser(RemainingHeight(4)); // 4 lines of text widgets in this function
+        DrawFileBrowser(RemainingHeight(3)); // 3 lines of text widgets in this function
         auto filePath = GetFileBrowserFilePath();
         auto insertedFilePath = _relative ? GetFileBrowserFilePathRelativeTo(layer->GetRealPath(), _unixify) : filePath;
         if (insertedFilePath.empty()) insertedFilePath = _sublayerPath;

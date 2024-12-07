@@ -31,7 +31,7 @@ template <typename FieldT, typename... Args> inline void DrawThirdColumn(const i
 //
 template <typename FieldT, typename... Args> inline void DrawThreeColumnsRow(const int rowId, const Args &...args) {
     ImGui::PushID(rowId);
-    ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowDefaultHeight);
+    ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowMinHeight);
     ScopedStyleColor style = GetRowStyle<FieldT>(rowId, args...);
     ImGui::TableSetColumnIndex(0);
     DrawFirstColumn<FieldT>(rowId, args...);
@@ -67,7 +67,7 @@ inline void SetupThreeColumnsTable(const bool showHeaders, const char *button = 
 
 // Rename to DrawTwoColumnRow
 template <typename FieldT, typename... Args> inline void DrawTwoColumnsRow(const int rowId, const Args &...args) {
-    ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowDefaultHeight);
+    ImGui::TableNextRow(ImGuiTableRowFlags_None, TableRowMinHeight);
     ScopedStyleColor style = GetRowStyle<FieldT>(rowId, args...);
     ImGui::TableSetColumnIndex(0);
     DrawFirstColumn<FieldT>(rowId, args...);
