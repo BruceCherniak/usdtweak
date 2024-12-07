@@ -4,6 +4,8 @@
 #include "Gui.h"
 #include "ResourcesLoader.h"
 #include "Constants.h"
+#include "Style.h"
+
 // Fonts
 #include "FontAwesomeFree5.h"
 #include "IBMPlexMonoFree.h"
@@ -129,6 +131,8 @@ ResourcesLoader::ResourcesLoader() {
     iniHandler.UserData = this;
     imGuiContext->SettingsHandlers.push_back(iniHandler);
 
+    ApplyDarkUTStyle();
+    
     // Ini file
     // The first time the application is open, there is no default ini and the UI is all over the place.
     // This bit of code adds a default configuration
