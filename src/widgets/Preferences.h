@@ -9,6 +9,6 @@ struct PreferencesModalDialog : public ModalDialog {
 
     void Draw() override;
 
-    const char *DialogId() const override { return "Create usd file"; }
+    const char *DialogId() const override { return "Preferences"; }
     Editor &editor;
 };
