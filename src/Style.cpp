@@ -61,7 +61,8 @@ void ApplyDarkUTStyle() {
     colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.000f, 0.391f, 0.000f, 1.000f);
     colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.000f, 0.000f, 0.000f, 0.586f);
     colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.000f, 0.000f, 0.000f, 0.586f);
-
+    colors[ImGuiCol_Separator] = ImVec4(0.469f, 0.469f, 0.469f, 1.000f);
+    
     style->ChildRounding = 4.0f;
     style->FrameBorderSize = 1.0f;
     style->FrameRounding = 2.0f;

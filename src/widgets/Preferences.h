@@ -11,4 +11,5 @@ struct PreferencesModalDialog : public ModalDialog {
 
     const char *DialogId() const override { return "Preferences"; }
     Editor &editor;
+    static bool needRestart;
 };

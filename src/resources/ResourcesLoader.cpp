@@ -1,9 +1,9 @@
 #include <iostream>
 
+#include "Constants.h"
 #include "DefaultImGuiIni.h"
 #include "Gui.h"
 #include "ResourcesLoader.h"
-#include "Constants.h"
 #include "Style.h"
 
 // Fonts
@@ -33,7 +33,7 @@ std::string GetConfigFilePath() {
     }
     return GUI_CONFIG_FILE;
 }
-#elif defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
+#elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
 #include <pwd.h>
 #include <stdio.h>
@@ -68,11 +68,32 @@ std::string GetConfigFilePath() { return GUI_CONFIG_FILE; }
 
 #endif
 
+const ImWchar *GetGlyphRange(const std::string &glyphRangeName) {
+    ImGuiIO &io = ImGui::GetIO();
+    if (glyphRangeName == "Greek") {
+        return io.Fonts->GetGlyphRangesGreek();
+    } else if (glyphRangeName == "Korean") {
+        return io.Fonts->GetGlyphRangesKorean();
+    } else if (glyphRangeName == "ChineseFull") {
+        return io.Fonts->GetGlyphRangesChineseFull();
+    } else if (glyphRangeName == "ChineseSimplifiedCommon") {
+        return io.Fonts->GetGlyphRangesChineseSimplifiedCommon();
+    } else if (glyphRangeName == "Japanese") {
+        return io.Fonts->GetGlyphRangesJapanese();
+    } else if (glyphRangeName == "Cyrillic") {
+        return io.Fonts->GetGlyphRangesCyrillic();
+    } else if (glyphRangeName == "Thai") {
+        return io.Fonts->GetGlyphRangesThai();
+    } else if (glyphRangeName == "Vietnamese") {
+        return io.Fonts->GetGlyphRangesVietnamese();
+    }
+    return io.Fonts->GetGlyphRangesDefault();
+}
+
 static void *UsdTweakDataReadOpen(ImGuiContext *, ImGuiSettingsHandler *iniHandler, const char *name) {
     ResourcesLoader *loader = static_cast<ResourcesLoader *>(iniHandler->UserData);
     return loader;
 }
-
 
 static void UsdTweakDataReadLine(ImGuiContext *, ImGuiSettingsHandler *iniHandler, void *loaderPtr, const char *line) {
     // Loader could be retrieved with
@@ -84,9 +105,11 @@ static void UsdTweakDataReadLine(ImGuiContext *, ImGuiSettingsHandler *iniHandle
     // Application
     char strBuffer[1024];
     if (sscanf(line, "Font=%s", strBuffer) == 1) {
-        ResourcesLoader::GetFontRegularPath() = strBuffer;
+        ResourcesLoader::GetFontRegularPath() = line + 5;
     } else if (sscanf(line, "FontMono=%s", strBuffer) == 1) {
-        ResourcesLoader::GetFontMonoPath() = strBuffer;
+        ResourcesLoader::GetFontMonoPath() = line + 9;
+    } else if (sscanf(line, "GlyphRange=%s", strBuffer) == 1) {
+        ResourcesLoader::GetGlyphRangeName() = line + 11;
     }
 }
 
@@ -95,13 +118,17 @@ static void UsdTweakDataWriteAll(ImGuiContext *ctx, ImGuiSettingsHandler *iniHan
     auto &editorSettings = ResourcesLoader::GetEditorSettings();
     buf->reserve(4096);
     buf->appendf("[%s][%s]\n", iniHandler->TypeName, "Application");
-    const std::string& fontRegularPath = ResourcesLoader::GetFontRegularPath();
+    const std::string &fontRegularPath = ResourcesLoader::GetFontRegularPath();
     if (!fontRegularPath.empty()) {
         buf->appendf("Font=%s\n", fontRegularPath.c_str());
     }
-    const std::string& fontMonoPath = ResourcesLoader::GetFontMonoPath();
+    const std::string &fontMonoPath = ResourcesLoader::GetFontMonoPath();
     if (!fontMonoPath.empty()) {
         buf->appendf("FontMono=%s\n", fontMonoPath.c_str());
+    }
+    const std::string &glyphRange = ResourcesLoader::GetGlyphRangeName();
+    if (!glyphRange.empty()) {
+        buf->appendf("GlyphRange=%s\n", glyphRange.c_str());
     }
 
     buf->appendf("[%s][%s]\n", iniHandler->TypeName, "Editor");
@@ -110,12 +137,12 @@ static void UsdTweakDataWriteAll(ImGuiContext *ctx, ImGuiSettingsHandler *iniHan
     auto &viewportSettings = ResourcesLoader::GetViewportSettings();
     buf->appendf("[%s][%s]\n", iniHandler->TypeName, "Viewport");
     viewportSettings.Dump(buf);
-
 }
 
 bool ResourcesLoader::_resourcesLoaded = false;
 std::string ResourcesLoader::_font = std::string();
 std::string ResourcesLoader::_fontMono = std::string();
+std::string ResourcesLoader::_glyphRange = std::string();
 
 EditorSettings ResourcesLoader::_editorSettings = EditorSettings();
 EditorSettings &ResourcesLoader::GetEditorSettings() { return _editorSettings; }
@@ -151,7 +178,7 @@ ResourcesLoader::ResourcesLoader() {
     imGuiContext->SettingsHandlers.push_back(iniHandler);
 
     ApplyDarkUTStyle();
-    
+
     // Ini file
     // The first time the application is open, there is no default ini and the UI is all over the place.
     // This bit of code adds a default configuration
@@ -167,8 +194,8 @@ ResourcesLoader::ResourcesLoader() {
     ScaleUI(GetEditorSettings()._uiScale);
 }
 
-int ResourcesLoader :: GetApplicationWidth() { return ResourcesLoader::GetEditorSettings()._mainWindowWidth; }
-int ResourcesLoader :: GetApplicationHeight() { return ResourcesLoader::GetEditorSettings()._mainWindowHeight; }
+int ResourcesLoader ::GetApplicationWidth() { return ResourcesLoader::GetEditorSettings()._mainWindowWidth; }
+int ResourcesLoader ::GetApplicationHeight() { return ResourcesLoader::GetEditorSettings()._mainWindowHeight; }
 
 void ResourcesLoader::ScaleUI(float scaleValue) {
 
@@ -176,16 +203,18 @@ void ResourcesLoader::ScaleUI(float scaleValue) {
     io.ConfigErrorRecoveryEnableTooltip = false;
     // We don't support the fonts hot reload yet, it is being worked on this PR:
     // https://github.com/ocornut/imgui/pull/3761
+    // That's why we need to make sure that the font are not loaded before we apply the scale.
     if (io.Fonts->Fonts.Size == 0) {
         ImGui::GetStyle().ScaleAllSizes(scaleValue);
-        // Fonts
 
+        // Load Fonts
         ImFontConfig fontConfig;
+        const ImWchar *glyphRange = GetGlyphRange(ResourcesLoader::GetGlyphRangeName());
 
         // Load primary font
-        if (_font.empty() 
-        || !io.Fonts->AddFontFromFileTTF(_font.c_str(), 16.f*scaleValue, &fontConfig, io.Fonts->GetGlyphRangesJapanese())) {
-            io.Fonts->AddFontFromMemoryCompressedTTF(ibmplexsansmediumfree_compressed_data, ibmplexsansmediumfree_compressed_size, 16.f*scaleValue, &fontConfig, nullptr);
+        if (_font.empty() || !io.Fonts->AddFontFromFileTTF(_font.c_str(), 16.f * scaleValue, &fontConfig, glyphRange)) {
+            io.Fonts->AddFontFromMemoryCompressedTTF(ibmplexsansmediumfree_compressed_data, ibmplexsansmediumfree_compressed_size,
+                                                     16.f * scaleValue, &fontConfig, nullptr);
         }
 
         // Merge Icons in primary font
@@ -193,15 +222,16 @@ void ResourcesLoader::ScaleUI(float scaleValue) {
         ImFontConfig iconsConfig;
         iconsConfig.MergeMode = true;
         iconsConfig.PixelSnapH = true;
-        io.Fonts->AddFontFromMemoryCompressedTTF(fontawesomefree5_compressed_data, fontawesomefree5_compressed_size, 13.f*scaleValue, &iconsConfig, iconRanges); // TODO: size 13 ? or 16 ? like the other fonts ?
+        io.Fonts->AddFontFromMemoryCompressedTTF(fontawesomefree5_compressed_data, fontawesomefree5_compressed_size,
+                                                 13.f * scaleValue, &iconsConfig,
+                                                 iconRanges); // TODO: size 13 ? or 16 ? like the other fonts ?
 
         // Monospace font, for the editor
-        if (_fontMono.empty() 
-        || !io.Fonts->AddFontFromFileTTF(_fontMono.c_str(), 16.f*scaleValue, &fontConfig, io.Fonts->GetGlyphRangesJapanese())) {
-            io.Fonts->AddFontFromMemoryCompressedTTF(ibmplexmonofree_compressed_data, ibmplexmonofree_compressed_size, 16.f*scaleValue, nullptr,
-                                            nullptr);
+        if (_fontMono.empty() || !io.Fonts->AddFontFromFileTTF(_fontMono.c_str(), 16.f * scaleValue, &fontConfig, glyphRange)) {
+            io.Fonts->AddFontFromMemoryCompressedTTF(ibmplexmonofree_compressed_data, ibmplexmonofree_compressed_size,
+                                                     16.f * scaleValue, nullptr, nullptr);
         }
-     }
+    }
 }
 
 ResourcesLoader::~ResourcesLoader() {
@@ -209,4 +239,11 @@ ResourcesLoader::~ResourcesLoader() {
     const std::string configFilePath = GetConfigFilePath();
     ImGui::SaveIniSettingsToDisk(configFilePath.c_str());
     ImGui::DestroyContext();
+}
+
+const std::vector<std::string> &ResourcesLoader::GetGlyphRangeNames() {
+    // Ranges known by ImGui
+    static std::vector<std::string> ranges = {"Default",  "Greek",    "Korean", "ChineseFull", "ChineseSimplifiedCommon",
+                                              "Japanese", "Cyrillic", "Thai",   "Vietnamese"};
+    return ranges;
 }
