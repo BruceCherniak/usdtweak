@@ -391,11 +391,9 @@ void Editor::WindowSizeCallback(GLFWwindow *window, int width, int height) {
 }
 
 Editor::Editor() : _viewport1(UsdStageRefPtr(), _selection),
-#if ENABLE_MULTIPLE_VIEWPORTS
 _viewport2(UsdStageRefPtr(), _selection),
 _viewport3(UsdStageRefPtr(), _selection),
 _viewport4(UsdStageRefPtr(), _selection),
-#endif
 _layerHistoryPointer(0) {
     ExecuteAfterDraw<EditorSetDataPointer>(this); // This is specialized to execute here, not after the draw
     LoadSettings();
@@ -433,11 +431,9 @@ void Editor::SetCurrentStage(UsdStageRefPtr stage) {
         }
         // TODO multiple viewport management
         _viewport1.SetCurrentStage(stage);
-#if ENABLE_MULTIPLE_VIEWPORTS
         _viewport2.SetCurrentStage(stage);
         _viewport3.SetCurrentStage(stage);
         _viewport4.SetCurrentStage(stage);
-#endif
     }
 }
 
@@ -539,38 +535,30 @@ Viewport & Editor::GetViewport() {
 
 void Editor::SelectMouseHoverManipulator() {
     _viewport1.ChooseManipulator<MouseHoverManipulator>();
-#if ENABLE_MULTIPLE_VIEWPORTS
     _viewport2.ChooseManipulator<MouseHoverManipulator>();
     _viewport3.ChooseManipulator<MouseHoverManipulator>();
     _viewport4.ChooseManipulator<MouseHoverManipulator>();
-#endif
 }
 
 void Editor::SelectPositionManipulator() {
     _viewport1.ChooseManipulator<PositionManipulator>();
-#if ENABLE_MULTIPLE_VIEWPORTS
     _viewport2.ChooseManipulator<PositionManipulator>();
     _viewport3.ChooseManipulator<PositionManipulator>();
     _viewport4.ChooseManipulator<PositionManipulator>();
-#endif
 }
 
 void Editor::SelectRotationManipulator() {
     _viewport1.ChooseManipulator<RotationManipulator>();
-#if ENABLE_MULTIPLE_VIEWPORTS
     _viewport2.ChooseManipulator<RotationManipulator>();
     _viewport3.ChooseManipulator<RotationManipulator>();
     _viewport4.ChooseManipulator<RotationManipulator>();
-#endif
 }
 
 void Editor::SelectScaleManipulator() {
     _viewport1.ChooseManipulator<ScaleManipulator>();
-#if ENABLE_MULTIPLE_VIEWPORTS
     _viewport2.ChooseManipulator<ScaleManipulator>();
     _viewport3.ChooseManipulator<ScaleManipulator>();
     _viewport4.ChooseManipulator<ScaleManipulator>();
-#endif
 }
 
 void Editor::StartPlayback() {
@@ -583,11 +571,9 @@ void Editor::StopPlayback() {
     // cast to nearest frame
     int newFrame = int(_viewport1.GetCurrentTimeCode().GetValue());
     _viewport1.SetCurrentTimeCode(UsdTimeCode(newFrame));
-#if ENABLE_MULTIPLE_VIEWPORTS
     _viewport2.SetCurrentTimeCode(UsdTimeCode(newFrame));
     _viewport3.SetCurrentTimeCode(UsdTimeCode(newFrame));
     _viewport4.SetCurrentTimeCode(UsdTimeCode(newFrame));
-#endif
 }
 
 void Editor::TogglePlayback() {
@@ -614,11 +600,10 @@ void Editor::HydraRender() {
         }
         //_imagingSettings.frame = UsdTimeCode(newFrame);
         _viewport1.SetCurrentTimeCode(UsdTimeCode(newFrame));
-#if ENABLE_MULTIPLE_VIEWPORTS
         _viewport2.SetCurrentTimeCode(UsdTimeCode(newFrame));
         _viewport3.SetCurrentTimeCode(UsdTimeCode(newFrame));
         _viewport4.SetCurrentTimeCode(UsdTimeCode(newFrame));
-#endif
+
         _lastFrameTime = current;
     }
     
@@ -629,7 +614,6 @@ void Editor::HydraRender() {
         _viewport1.Update();
         _viewport1.Render();
     }
-#if ENABLE_MULTIPLE_VIEWPORTS
     if (_settings._showViewport2) {
         _viewport2.Update();
         _viewport2.Render();
@@ -642,7 +626,6 @@ void Editor::HydraRender() {
         _viewport4.Update();
         _viewport4.Render();
     }
-#endif
 #endif
 
 }
@@ -813,11 +796,9 @@ void Editor::DrawMainMenuBar() {
             ImGui::MenuItem(HydraBrowserWindowTitle, nullptr, &_settings._showHydraBrowser);
             ImGui::MenuItem(TimelineWindowTitle, nullptr, &_settings._showTimeline);
             ImGui::MenuItem(Viewport1WindowTitle, nullptr, &_settings._showViewport1);
-#if ENABLE_MULTIPLE_VIEWPORTS
             ImGui::MenuItem(Viewport2WindowTitle, nullptr, &_settings._showViewport2);
             ImGui::MenuItem(Viewport3WindowTitle, nullptr, &_settings._showViewport3);
             ImGui::MenuItem(Viewport4WindowTitle, nullptr, &_settings._showViewport4);
-#endif
             ImGui::MenuItem(StatusBarWindowTitle, nullptr, &_settings._showStatusBar);
             ImGui::MenuItem(LauncherBarWindowTitle, nullptr, &_settings._showLauncherBar);
             ImGui::EndMenu();
@@ -863,7 +844,7 @@ void Editor::Draw() {
         GetViewport().Draw();
         ImGui::End();
     }
-#if ENABLE_MULTIPLE_VIEWPORTS
+
     if (_settings._showViewport2) {
         const ImGuiWindowFlags viewportFlags = _viewport2.HasMenuBar() ? ImGuiWindowFlags_None | ImGuiWindowFlags_MenuBar : ImGuiWindowFlags_None;
         TRACE_SCOPE(Viewport2WindowTitle);
@@ -891,13 +872,11 @@ void Editor::Draw() {
         _viewport4.Draw();
         ImGui::End();
     }
-#endif
+
     if (_settings._showViewport1
-#if ENABLE_MULTIPLE_VIEWPORTS
         || _settings._showViewport2
         || _settings._showViewport3
         || _settings._showViewport4
-#endif
         ) {
         DrawManipulatorToolbox(this);
     }
@@ -954,11 +933,9 @@ void Editor::Draw() {
         UsdTimeCode tc = GetViewport().GetCurrentTimeCode();
         DrawTimeline(GetCurrentStage(), tc);
         GetViewport().SetCurrentTimeCode(tc);
-#if ENABLE_MULTIPLE_VIEWPORTS
         _viewport2.SetCurrentTimeCode(tc);
         _viewport3.SetCurrentTimeCode(tc);
         _viewport4.SetCurrentTimeCode(tc);
-#endif
         ImGui::End();
     }
 

@@ -226,8 +226,7 @@ std::string ViewportCameras::GetCurrentCameraName() const {
 // Draw the list of cameras available for the stage
 void ViewportCameras::DrawCameraList(const UsdStageRefPtr &stage) {
     ScopedStyleColor defaultStyle(DefaultColorStyle);
-#if ENABLE_MULTIPLE_VIEWPORTS
-    
+
 #define CAMERA_BUTTON(NAME) \
     ImGui::SameLine();\
     if (ImGui::Button(_cameraNames[Viewport ## NAME].c_str())) {\
@@ -244,14 +243,8 @@ void ViewportCameras::DrawCameraList(const UsdStageRefPtr &stage) {
 
 #undef MAKE_CAMERA_BUTTON
 
-#endif
 
     if (ImGui::BeginListBox("##CameraList")) {
-#if !ENABLE_MULTIPLE_VIEWPORTS
-        if (ImGui::Selectable(_cameraNames[ViewportPerspective].c_str(), IsPerspective())) {
-            UseInternalCamera(stage, ViewportPerspective);
-        }
-#endif
         if (stage) {
             UsdPrimRange range = stage->Traverse();
             for (const auto &prim : range) {

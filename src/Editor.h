@@ -150,11 +150,9 @@ public:
 
     UsdStageRefPtr _currentStage;
     Viewport _viewport1;
-#if ENABLE_MULTIPLE_VIEWPORTS
     Viewport _viewport2;
     Viewport _viewport3;
     Viewport _viewport4;
-#endif
 
     /// Selection for stages and layers
     Selection _selection;
