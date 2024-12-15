@@ -18,7 +18,7 @@ void PreferencesModalDialog::Draw() {
     if (needRestart) {
         ImGui::TextColored(ImVec4(1.0, 0.2, 0.2, 1.0), "You must restart usdtweak to apply your changes");
     }
-    const float heightWithoutCloseButton = RemainingHeight(1 + needRestart); // - g.Style.ItemSpacing.y*2.f;
+    const float heightWithoutCloseButton = RemainingHeight(1 + needRestart);
     ImVec2 prefContentSize(0, heightWithoutCloseButton);
     ImVec2 prefTabSize(g.FontSize * 5, heightWithoutCloseButton);
     if (ImGui::BeginListBox("##PreferencePanels", prefTabSize)) {
@@ -77,15 +77,24 @@ void PreferencesModalDialog::Draw() {
             }
             ImGui::Separator();
             ImGui::Text("Selecting a unicode fonts allow to display a wider range of characters, chinese, japanese, etc.");
-            ImGui::Text("You also have to select the glyph range according to the set of glyph you want to display.");
+            ImGui::Text("You also have to select the glyph range according to the set of glyphs you want to display.");
             ImGui::Text("On the downside, having extended fonts will use more graphic memory and result in a slower startup.");
             ImGui::NewLine();
 #ifdef __APPLE__
             ImGui::Text("On macOS, a potential font could be: ");
             ImGui::Text("/System/Library/Fonts/Supplemental/Arial Unicode.ttf");
-            if (ImGui::Button("Try Unicode font")) {
+            if (ImGui::Button("Try Unicode fonts")) {
                 font = "/System/Library/Fonts/Supplemental/Arial Unicode.ttf";
                 fontMono = "/System/Library/Fonts/Supplemental/Courier New.ttf";
+                needRestart = true;
+            }
+            ImGui::SameLine();
+#endif
+#ifdef _WIN64
+            ImGui::Text("On windows, a potential font could be: ");
+            ImGui::Text("C:\\Windows\\Fonts\\ARIALUNI.TTF");
+            if (ImGui::Button("Try Unicode font")) {
+                font = "C:\\Windows\\Fonts\\ARIALUNI.TTF";
                 needRestart = true;
             }
             ImGui::SameLine();
