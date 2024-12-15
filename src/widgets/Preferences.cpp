@@ -10,14 +10,14 @@
 PreferencesModalDialog::PreferencesModalDialog(Editor &editor) : editor(editor){};
 
 void PreferencesModalDialog::Draw() {
-    static const char *const panels[] = {"General", "Viewport", "Style"};
+    static const char *const panels[] = {"General", "Viewport", "Style", "Fonts"};
     static int current_item = 0;
     const ImGuiContext &g = *GImGui;
     const float heightWithoutCloseButton = RemainingHeight(1); // - g.Style.ItemSpacing.y*2.f;
     ImVec2 prefContentSize(0, heightWithoutCloseButton);
     ImVec2 prefTabSize(g.FontSize * 5, heightWithoutCloseButton);
     if (ImGui::BeginListBox("##PreferencePanels", prefTabSize)) {
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < 4; ++i) {
             if (ImGui::Selectable(panels[i], i == current_item)) {
                 current_item = i;
             }
@@ -45,6 +45,15 @@ void PreferencesModalDialog::Draw() {
     } else if (current_item == 2) {
         if (ImGui::BeginChild("##Style", prefContentSize)) {
             ShowStyleEditor(nullptr);
+            ImGui::EndChild();
+        }
+    } else if (current_item == 3) {
+        if (ImGui::BeginChild("##Fonts", prefContentSize)) {
+            std::string& font = ResourcesLoader::GetFontRegularPath();
+            std::string &fontMono = ResourcesLoader::GetFontMonoPath();
+            ImGui::Text("Choose unicode font from you operating system.");
+            ImGui::InputTextWithHint("Regular Font", "Using default font", &font);
+            ImGui::InputTextWithHint("Mono Font", "Using default font", &fontMono);
             ImGui::EndChild();
         }
     }

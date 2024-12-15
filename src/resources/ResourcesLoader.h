@@ -19,6 +19,9 @@
     static int GetApplicationWidth();
     static int GetApplicationHeight();
 
+    static std::string& GetFontRegularPath() { return _font; };
+    static std::string& GetFontMonoPath() { return _fontMono; };
+
     // This should not be called during a frame render.
     static void ScaleUI(float scaleValue);
 
@@ -28,5 +31,7 @@
      // between editor and editor settings.
      static EditorSettings _editorSettings;
      static ViewportSettings _viewportSettings;
+     static std::string _font;
+     static std::string _fontMono;
      static bool _resourcesLoaded;
 };
