@@ -31,8 +31,11 @@ As of today usdtweak allows
 If you want to try usdtweak without the burden of compiling it, you can download the latest installer here https://github.com/cpichard/usdtweak/releases. Feel free to [reach out](#contact) if you have any issue with it (or success).
 
 ## Building
+If you're on windows, you can use `windows-build.ps1` powershell script to build usdtweak. It will download the USD libraries from NVIDIA and compile usdtweak for you, granted you have the required tools installed (git, cmake, visual studio 2022 build tools).
+Keep in mind nvidia USD binaries are under [NVIDIA OMNIVERSE LICENSING](https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/), make sure you're aware of the terms and conditions before using them.
+After running the build script, you can run `windows-start.bat` to start usdtweak.
 
-You can also build usdtweak, [see the instructions](doc/Building.md) in the doc subfolder. 
+Otherwise you can follow the instructions in the [Building.md](doc/Building.md) file to compile usdtweak manually:
 
  - [Building requirements](doc/Building.md#requirements)
  - [Building on windows](doc/Building.md#compiling-on-windows)
